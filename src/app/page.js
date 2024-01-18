@@ -5,6 +5,14 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Toggle } from '@/components/ui/toggle'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
@@ -56,6 +64,13 @@ export default function Home() {
     downloadLinkElem.href = imageDataURL
   }
 
+  const removeImage = () => {
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    setSelectedImage(null)
+  }
+
   return (
     <main className='min-h-screen flex flex-col items-center p-24'>
       <div className='mt-4'>
@@ -82,6 +97,11 @@ export default function Home() {
         <div>
           <canvas id='canvas' width={800} height={800}></canvas>
         </div>
+        {selectedImage ? (
+          <div>
+            <Button onClick={() => removeImage()}>New</Button>
+          </div>
+        ) : null}
       </div>
     </main>
   )
