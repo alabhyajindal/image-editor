@@ -1,36 +1,70 @@
 'use client'
 
-import Image from 'next/image'
+// import Image from 'next/image'
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Toggle } from '@/components/ui/toggle'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
-  const [isGrayscale, setIsGrayscale] = useState(false)
+
+  function addTextToImage(imagePath, text) {
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+
+    // Draw Image function
+    const img = new Image()
+    img.src = imagePath
+    img.onload = function () {
+      const hRatio = canvas.width / img.width
+      const vRatio = canvas.height / img.height
+      const ratio = Math.min(hRatio, vRatio)
+      context.drawImage(
+        img,
+        0,
+        0,
+        img.width,
+        img.height,
+        0,
+        0,
+        img.width * ratio,
+        img.height * ratio
+      )
+
+      context.lineWidth = 1
+      context.fillStyle = '#00ff'
+      context.font = '24px sans-serif'
+      context.fillText(text, 50, 50)
+      setDownloadURL()
+    }
+  }
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0]
     if (file) {
       const image = URL.createObjectURL(file)
       setSelectedImage(image)
+      addTextToImage(image, 'this is a dummy text')
     }
   }
 
-  const toggleGrayscale = () => {
-    setIsGrayscale((g) => !g)
+  const setDownloadURL = () => {
+    const canvas = document.getElementById('canvas')
+    const imageDataURL = canvas.toDataURL('image/png')
+    const downloadLinkElem = document.getElementById('download-link')
+    downloadLinkElem.href = imageDataURL
   }
 
   return (
     <main className='min-h-screen flex flex-col items-center p-24'>
       <div className='mt-4'>
         {selectedImage ? (
-          <div className='mb-2'>
-            <Toggle pressed={isGrayscale} onClick={toggleGrayscale}>
-              Grayscale
-            </Toggle>
+          <div className='mb-2 flex justify-between px-1'>
+            <Button>Add Text</Button>
+            <a href='#' id='download-link' download='image'>
+              <Button>Download</Button>
+            </a>
           </div>
         ) : (
           <div className='flex flex-col items-center'>
@@ -46,14 +80,7 @@ export default function Home() {
           </div>
         )}
         <div>
-          {selectedImage && (
-            <Image
-              src={selectedImage}
-              alt='Uploaded Image'
-              height={500}
-              width={500}
-            />
-          )}
+          <canvas id='canvas' width={800} height={800}></canvas>
         </div>
       </div>
     </main>
