@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
+import { Input } from '@/components/ui/input'
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
@@ -17,7 +18,7 @@ export default function Home() {
   return (
     <main className='flex min-h-screen flex-col items-center justify-center p-24'>
       <div>
-        <input
+        <Input
           type='file'
           name='imageInput'
           id='imageInput'
@@ -30,8 +31,8 @@ export default function Home() {
           <Image
             src={selectedImage}
             alt='Uploaded Image'
-            height={500}
-            width={500}
+            height={800}
+            width={800}
           />
         )}
       </div>
