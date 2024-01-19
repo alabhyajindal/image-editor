@@ -1,7 +1,7 @@
 'use client'
 
 // import Image from 'next/image'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Toggle } from '@/components/ui/toggle'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,7 @@ import {
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
+  const canvasRef = useRef(null)
 
   function drawImageOnCanvas(imagePath) {
     const canvas = document.getElementById('canvas')
@@ -47,13 +48,6 @@ export default function Home() {
     }
   }
 
-  const setDownloadURL = () => {
-    const canvas = document.getElementById('canvas')
-    const imageDataURL = canvas.toDataURL('image/png')
-    const downloadLinkElem = document.getElementById('download-link')
-    downloadLinkElem.href = imageDataURL
-  }
-
   const removeImage = () => {
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
@@ -61,15 +55,24 @@ export default function Home() {
     setSelectedImage(null)
   }
 
+  const downloadImage = () => {
+    const canvas = document.getElementById('canvas')
+    const link = document.createElement('a')
+    link.download = 'image.jpg'
+    link.href = canvas.toDataURL('image/jpg')
+    link.click()
+  }
+
   return (
     <main className='min-h-screen p-24 flex justify-center'>
       <div className='mt-4'>
         {selectedImage ? (
           <div className='mb-2 flex justify-between px-1'>
+            <Button variant='outline' onClick={removeImage}>
+              New
+            </Button>
             <Button>Add Text</Button>
-            <a href='#' id='download-link' download='image'>
-              <Button>Download</Button>
-            </a>
+            <Button onClick={downloadImage}>Download</Button>
           </div>
         ) : (
           <div className='flex flex-col items-center'>
@@ -85,15 +88,9 @@ export default function Home() {
           </div>
         )}
         <div className='max-w-xl'>
-          <canvas className='w-full' id='canvas'></canvas>
+          <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
         </div>
-        {selectedImage ? (
-          <div className='mt-2'>
-            <Button variant='outline' onClick={removeImage}>
-              New
-            </Button>
-          </div>
-        ) : null}
+        {selectedImage ? <div className='mt-2'></div> : null}
       </div>
     </main>
   )
