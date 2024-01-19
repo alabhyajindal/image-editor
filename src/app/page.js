@@ -33,6 +33,7 @@ export default function Home() {
   const [imageText, setImageText] = useState('')
   const [textColor, setTextColor] = useState('#020617')
   const [textFont, setTextFont] = useState('sans-serif')
+  const [textSize, setTextSize] = useState(48)
 
   function drawImageOnCanvas(imagePath) {
     const canvas = document.getElementById('canvas')
@@ -82,7 +83,7 @@ export default function Home() {
   const addText = () => {
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
-    ctx.font = `50px ${textFont}`
+    ctx.font = `${textSize}px ${textFont}`
     ctx.fillStyle = textColor
     ctx.fillText(imageText, 50, 50)
 
@@ -115,6 +116,19 @@ export default function Home() {
                       id='text'
                       value={imageText}
                       onChange={(e) => setImageText(e.target.value)}
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-2 items-start'>
+                    <Label htmlFor='size' className='text-right text-slate-600'>
+                      Size
+                    </Label>
+                    <Input
+                      value={textSize}
+                      onChange={(e) => setTextSize(e.target.value)}
+                      type='number'
+                      min='24'
+                      id='size'
                     />
                   </div>
 
