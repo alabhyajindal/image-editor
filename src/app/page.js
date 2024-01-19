@@ -17,34 +17,24 @@ import {
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
 
-  function addTextToImage(imagePath, text) {
+  function drawImageOnCanvas(imagePath) {
     const canvas = document.getElementById('canvas')
-    const context = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d')
 
-    // Draw Image function
     const img = new Image()
     img.src = imagePath
     img.onload = function () {
-      const hRatio = canvas.width / img.width
-      const vRatio = canvas.height / img.height
-      const ratio = Math.min(hRatio, vRatio)
-      context.drawImage(
-        img,
-        0,
-        0,
-        img.width,
-        img.height,
-        0,
-        0,
-        img.width * ratio,
-        img.height * ratio
-      )
+      if (img.height > img.width) {
+        canvas.width = 500
+        const ratio = img.height / img.width
+        canvas.height = canvas.width * ratio
+      } else {
+        canvas.height = 500
+        const ratio = img.width / img.height
+        canvas.width = canvas.height * ratio
+      }
 
-      context.lineWidth = 1
-      context.fillStyle = '#00ff'
-      context.font = '24px sans-serif'
-      context.fillText(text, 50, 50)
-      setDownloadURL()
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
     }
   }
 
@@ -53,7 +43,7 @@ export default function Home() {
     if (file) {
       const image = URL.createObjectURL(file)
       setSelectedImage(image)
-      addTextToImage(image, 'this is a dummy text')
+      drawImageOnCanvas(image)
     }
   }
 
@@ -66,13 +56,13 @@ export default function Home() {
 
   const removeImage = () => {
     const canvas = document.getElementById('canvas')
-    const context = canvas.getContext('2d')
-    context.clearRect(0, 0, canvas.width, canvas.height)
+    const ctx = canvas.getContext('2d')
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     setSelectedImage(null)
   }
 
   return (
-    <main className='min-h-screen flex flex-col items-center p-24'>
+    <main className='min-h-screen p-24 flex justify-center'>
       <div className='mt-4'>
         {selectedImage ? (
           <div className='mb-2 flex justify-between px-1'>
@@ -94,12 +84,14 @@ export default function Home() {
             />
           </div>
         )}
-        <div>
-          <canvas id='canvas' width={800} height={800}></canvas>
+        <div className='max-w-xl'>
+          <canvas className='w-full' id='canvas'></canvas>
         </div>
         {selectedImage ? (
-          <div>
-            <Button onClick={() => removeImage()}>New</Button>
+          <div className='mt-2'>
+            <Button variant='outline' onClick={removeImage}>
+              New
+            </Button>
           </div>
         ) : null}
       </div>
