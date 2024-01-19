@@ -27,17 +27,15 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Form } from '@/components/ui/form'
-import { useToast } from '@/components/ui/use-toast'
+import toast from 'react-hot-toast'
 
 const FONTS = ['Noto Sans', 'Martian Mono', 'Climate Crisis']
 
 export default function Home() {
-  const { toast } = useToast()
-
   const [selectedImage, setSelectedImage] = useState(null)
   const [textOpen, setTextOpen] = useState(false)
   const [imageText, setImageText] = useState('')
-  const [textColor, setTextColor] = useState('#020617')
+  const [textColor, setTextColor] = useState('#fff')
   const [textFont, setTextFont] = useState('Noto Sans')
   const [textSize, setTextSize] = useState(48)
 
@@ -105,7 +103,9 @@ export default function Home() {
   }
 
   const promptForTextPosition = () => {
-    toast({ description: 'Click on the image to add text' })
+    const toastId = toast.loading('Click on the image to add text', {
+      position: 'bottom-center',
+    })
     setTextOpen(false)
     const canvas = canvasRef.current
 
@@ -116,6 +116,7 @@ export default function Home() {
 
       addText(x, y)
       canvas.removeEventListener('click', clickHandler)
+      toast.dismiss(toastId)
     }
 
     canvas.addEventListener('click', clickHandler)
@@ -190,7 +191,10 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <Button type='button' onClick={promptForTextPosition}>
+              <Button
+                type='button'
+                onClick={() => (imageText ? promptForTextPosition() : null)}
+              >
                 Add
               </Button>
             </DialogContent>
