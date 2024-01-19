@@ -119,7 +119,15 @@ export default function Home() {
       toast.dismiss(toastId)
     }
 
+    const keydownHandler = (event) => {
+      if (event.key === 'Escape') {
+        toast.dismiss(toastId)
+      }
+      document.removeEventListener('keydown', keydownHandler)
+    }
+
     canvas.addEventListener('click', clickHandler)
+    document.addEventListener('keydown', keydownHandler)
   }
 
   return (
