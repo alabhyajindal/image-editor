@@ -56,8 +56,8 @@ export default function Home() {
   }
 
   return (
-    <main className='bg-blue-400 min-h-screen flex flex-col'>
-      <Card className='w-[350px] m-auto'>
+    <main className='bg-blue-400 min-h-screen flex flex-col items-center justify-center'>
+      <Card className='w-[350px]'>
         <CardHeader>
           <CardTitle>Login</CardTitle>
         </CardHeader>

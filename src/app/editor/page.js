@@ -92,94 +92,89 @@ export default function Home() {
   }
 
   return (
-    <main className='mt-24 flex justify-center'>
-      <div className='mt-4'>
-        {selectedImage ? (
-          <div className='mb-2 flex justify-between px-1'>
-            <Button variant='outline' onClick={removeImage}>
-              New
-            </Button>
-            <Dialog open={textOpen} onOpenChange={setTextOpen}>
-              <DialogTrigger asChild>
-                <Button>Add Text</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add text</DialogTitle>
-                </DialogHeader>
-                <div className='flex flex-col gap-6 mt-4'>
-                  <div className='flex flex-col gap-2 items-start'>
-                    <Label htmlFor='text' className='text-right text-slate-600'>
-                      Text
-                    </Label>
-                    <Input
-                      id='text'
-                      value={imageText}
-                      onChange={(e) => setImageText(e.target.value)}
-                    />
-                  </div>
-
-                  <div className='flex flex-col gap-2 items-start'>
-                    <Label htmlFor='size' className='text-right text-slate-600'>
-                      Size
-                    </Label>
-                    <Input
-                      value={textSize}
-                      onChange={(e) => setTextSize(e.target.value)}
-                      type='number'
-                      min='24'
-                      id='size'
-                    />
-                  </div>
-
-                  <div className='flex flex-col gap-2 items-start'>
-                    <Label htmlFor='font' className='text-right text-slate-600'>
-                      Font
-                    </Label>
-                    <Select value={textFont} onValueChange={setTextFont}>
-                      <SelectTrigger>
-                        <SelectValue placeholder='Choose a font' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value='serif'>Serif</SelectItem>
-                          <SelectItem value='sans-serif'>Sans-Serif</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className='flex'>
-                    <HexColorPicker
-                      className='flex-grow'
-                      color={textColor}
-                      onChange={setTextColor}
-                    />
-                  </div>
+    <main className='min-h-screen flex flex-col items-center justify-center'>
+      {selectedImage ? (
+        <div className='mb-2 flex justify-center gap-8'>
+          <Button variant='outline' onClick={removeImage}>
+            New
+          </Button>
+          <Dialog open={textOpen} onOpenChange={setTextOpen}>
+            <DialogTrigger asChild>
+              <Button>Add Text</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add text</DialogTitle>
+              </DialogHeader>
+              <div className='flex flex-col gap-6 mt-4'>
+                <div className='flex flex-col gap-2 items-start'>
+                  <Label htmlFor='text' className='text-right text-slate-600'>
+                    Text
+                  </Label>
+                  <Input
+                    id='text'
+                    value={imageText}
+                    onChange={(e) => setImageText(e.target.value)}
+                  />
                 </div>
-                <Button type='button' onClick={addText}>
-                  Add
-                </Button>
-              </DialogContent>
-            </Dialog>
-            <Button onClick={downloadImage}>Download</Button>
-          </div>
-        ) : (
-          <div className='flex flex-col items-center'>
-            <Input
-              type='file'
-              name='imageInput'
-              id='imageInput'
-              onChange={handleImageUpload}
-              accept='image/*'
-              className='cursor-pointer max-w-xs'
-            />
-          </div>
-        )}
-        <div className='max-w-xl'>
-          <canvas className='w-full' id='canvas'></canvas>
+
+                <div className='flex flex-col gap-2 items-start'>
+                  <Label htmlFor='size' className='text-right text-slate-600'>
+                    Size
+                  </Label>
+                  <Input
+                    value={textSize}
+                    onChange={(e) => setTextSize(e.target.value)}
+                    type='number'
+                    min='24'
+                    id='size'
+                  />
+                </div>
+
+                <div className='flex flex-col gap-2 items-start'>
+                  <Label htmlFor='font' className='text-right text-slate-600'>
+                    Font
+                  </Label>
+                  <Select value={textFont} onValueChange={setTextFont}>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Choose a font' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value='serif'>Serif</SelectItem>
+                        <SelectItem value='sans-serif'>Sans-Serif</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className='flex'>
+                  <HexColorPicker
+                    className='flex-grow'
+                    color={textColor}
+                    onChange={setTextColor}
+                  />
+                </div>
+              </div>
+              <Button type='button' onClick={addText}>
+                Add
+              </Button>
+            </DialogContent>
+          </Dialog>
+          <Button onClick={downloadImage}>Download</Button>
         </div>
-        {selectedImage ? <div className='mt-2'></div> : null}
+      ) : (
+        <Input
+          type='file'
+          name='imageInput'
+          id='imageInput'
+          onChange={handleImageUpload}
+          accept='image/*'
+          className='cursor-pointer max-w-xs'
+        />
+      )}
+      <div>
+        <canvas className='w-full' id='canvas'></canvas>
       </div>
     </main>
   )
