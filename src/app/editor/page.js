@@ -29,6 +29,8 @@ import {
 import { Form } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
 
+const FONTS = ['Noto Sans', 'Martian Mono', 'Climate Crisis']
+
 export default function Home() {
   const { toast } = useToast()
 
@@ -36,7 +38,7 @@ export default function Home() {
   const [textOpen, setTextOpen] = useState(false)
   const [imageText, setImageText] = useState('')
   const [textColor, setTextColor] = useState('#020617')
-  const [textFont, setTextFont] = useState('sans-serif')
+  const [textFont, setTextFont] = useState('Noto Sans')
   const [textSize, setTextSize] = useState(48)
 
   const canvasRef = useRef(null)
@@ -170,11 +172,11 @@ export default function Home() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value='serif'>Serif</SelectItem>
-                        <SelectItem value='sans-serif'>Sans-Serif</SelectItem>
-                        <SelectItem value='Luckiest Guy'>
-                          Luckiest Guy
-                        </SelectItem>
+                        {FONTS.map((font, index) => (
+                          <SelectItem key={index} value={font}>
+                            {font}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -211,7 +213,11 @@ export default function Home() {
 
       {/* Loading fonts */}
       <section className='invisible'>
-        <div style={{ fontFamily: 'Luckiest Guy' }}>.</div>
+        {FONTS.map((font, index) => (
+          <div key={index} style={{ fontFamily: font }}>
+            .
+          </div>
+        ))}
       </section>
     </main>
   )
