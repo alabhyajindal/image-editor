@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useToast } from '@/components/ui/use-toast'
 import {
   Card,
   CardContent,
@@ -24,6 +23,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import toast from 'react-hot-toast'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -36,7 +36,6 @@ const formSchema = z.object({
 })
 
 export default function Home() {
-  const { toast } = useToast()
   const router = useRouter()
 
   const form = useForm({
@@ -48,16 +47,13 @@ export default function Home() {
   })
 
   function onSubmit(values) {
-    toast({
-      title: 'Login complete',
-      description: `Welcome ${values.email}`,
-    })
+    toast.success('Login complete!')
     router.push('/editor')
   }
 
   return (
-    <main className='bg-blue-400 min-h-screen flex flex-col items-center justify-center'>
-      <Card className='w-[350px]'>
+    <main className='bg-green-400'>
+      <Card className='w-[350px] m-auto'>
         <CardHeader>
           <CardTitle>Login</CardTitle>
         </CardHeader>
