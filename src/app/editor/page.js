@@ -92,7 +92,7 @@ export default function Home() {
   }
 
   return (
-    <main className='flex justify-center'>
+    <main className='mt-24 flex justify-center'>
       <div className='mt-4'>
         {selectedImage ? (
           <div className='mb-2 flex justify-between px-1'>

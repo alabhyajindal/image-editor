@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
+import { GitHubLogoIcon } from '@radix-ui/react-icons'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,12 +14,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <header>
-          <h1 className='mt-24 text-4xl font-semibold text-center'>
-            Image Editor
-          </h1>
+        <header className='absolute top-0 flex items-center justify-between w-full p-4'>
+          <h1 className='text-2xl font-semibold'>Image Editor</h1>
+          <div>
+            <a href='https://github.com/alabhyajindal/image-editor'>
+              <GitHubLogoIcon height={24} width={24} />
+            </a>
+          </div>
         </header>
-        <section>{children}</section>
+        {children}
+
         <Toaster />
       </body>
     </html>

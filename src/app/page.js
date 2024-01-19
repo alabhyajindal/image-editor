@@ -16,6 +16,15 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -47,47 +56,59 @@ export default function Home() {
   }
 
   return (
-    <main className='mt-24 max-w-xs m-auto'>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder='Email' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <main className='bg-blue-400 min-h-screen flex flex-col'>
+      <Card className='w-[350px] m-auto'>
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+        </CardHeader>
 
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder='Password' type='password' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className='w-full' type='submit'>
-            Submit
-          </Button>
-        </form>
-      </Form>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder='Email' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-      <div className='mt-2'>
-        <Link href='/editor'>
-          <Button className='w-full' variant='outline'>
-            Skip
-          </Button>
-        </Link>
-      </div>
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder='Password'
+                        type='password'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className='w-full' type='submit'>
+                Submit
+              </Button>
+            </form>
+          </Form>
+
+          <div className='mt-2'>
+            <Link href='/editor'>
+              <Button className='w-full' variant='outline'>
+                Skip
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </main>
   )
 }
