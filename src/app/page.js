@@ -52,59 +52,53 @@ export default function Home() {
   }
 
   return (
-    <main className='bg-green-400'>
-      <Card className='w-[350px] m-auto'>
-        <CardHeader>
-          <CardTitle>Login</CardTitle>
-        </CardHeader>
+    <Card className='w-[350px] mx-auto mt-24'>
+      <CardHeader>
+        <CardTitle>Login</CardTitle>
+      </CardHeader>
 
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder='Email' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder='Email' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder='Password'
-                        type='password'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button className='w-full' type='submit'>
-                Submit
-              </Button>
-            </form>
-          </Form>
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder='Password' type='password' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className='w-full' type='submit'>
+              Submit
+            </Button>
+          </form>
+        </Form>
 
-          <div className='mt-2'>
-            <Link href='/editor'>
-              <Button className='w-full' variant='outline'>
-                Skip
-              </Button>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
-    </main>
+        <div className='mt-2'>
+          <Link href='/editor'>
+            <Button className='w-full' variant='outline'>
+              Skip
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
