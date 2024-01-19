@@ -26,14 +26,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Form } from '@/components/ui/form'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function Home() {
+  const { toast } = useToast()
+
   const [selectedImage, setSelectedImage] = useState(null)
   const [textOpen, setTextOpen] = useState(false)
   const [imageText, setImageText] = useState('')
   const [textColor, setTextColor] = useState('#020617')
   const [textFont, setTextFont] = useState('sans-serif')
   const [textSize, setTextSize] = useState(48)
+
+  const canvasRef = useRef(null)
 
   function drawImageOnCanvas(imagePath) {
     const canvas = document.getElementById('canvas')
@@ -80,15 +86,37 @@ export default function Home() {
     link.click()
   }
 
-  const addText = () => {
+  const updateTextSize = (value) => {
+    if (value != '' && value >= 24 && value <= 140) {
+      setTextSize(value)
+    }
+  }
+
+  const addText = (x, y) => {
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
     ctx.font = `${textSize}px ${textFont}`
     ctx.fillStyle = textColor
-    ctx.fillText(imageText, 50, 50)
+    ctx.fillText(imageText, x, y)
 
-    setTextOpen(false)
     setImageText('')
+  }
+
+  const promptForTextPosition = () => {
+    toast({ description: 'Click on the image to add text' })
+    setTextOpen(false)
+    const canvas = canvasRef.current
+
+    const clickHandler = (event) => {
+      const rect = canvas.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+
+      addText(x, y)
+      canvas.removeEventListener('click', clickHandler)
+    }
+
+    canvas.addEventListener('click', clickHandler)
   }
 
   return (
@@ -106,6 +134,7 @@ export default function Home() {
               <DialogHeader>
                 <DialogTitle>Add text</DialogTitle>
               </DialogHeader>
+
               <div className='flex flex-col gap-6 mt-4'>
                 <div className='flex flex-col gap-2 items-start'>
                   <Label htmlFor='text' className='text-right text-slate-600'>
@@ -124,7 +153,7 @@ export default function Home() {
                   </Label>
                   <Input
                     value={textSize}
-                    onChange={(e) => setTextSize(e.target.value)}
+                    onChange={(e) => updateTextSize(e.target.value)}
                     type='number'
                     min='24'
                     id='size'
@@ -156,7 +185,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <Button type='button' onClick={addText}>
+              <Button type='button' onClick={promptForTextPosition}>
                 Add
               </Button>
             </DialogContent>
@@ -174,7 +203,7 @@ export default function Home() {
         />
       )}
       <div>
-        <canvas className='w-full' id='canvas'></canvas>
+        <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
       </div>
     </main>
   )
