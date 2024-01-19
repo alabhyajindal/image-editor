@@ -19,6 +19,7 @@ import { Label } from '@/components/ui/label'
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
+  const [textOpen, setTextOpen] = useState(false)
   const [imageText, setImageText] = useState('')
 
   function drawImageOnCanvas(imagePath) {
@@ -66,6 +67,16 @@ export default function Home() {
     link.click()
   }
 
+  const addText = () => {
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+    ctx.font = '50px sans-serif'
+    ctx.fillText(imageText, 50, 50)
+
+    setTextOpen(false)
+    setImageText('')
+  }
+
   return (
     <main className='min-h-screen p-24 flex justify-center'>
       <div className='mt-4'>
@@ -74,7 +85,7 @@ export default function Home() {
             <Button variant='outline' onClick={removeImage}>
               New
             </Button>
-            <Dialog>
+            <Dialog open={textOpen} onOpenChange={setTextOpen}>
               <DialogTrigger asChild>
                 <Button>Add Text</Button>
               </DialogTrigger>
@@ -96,9 +107,9 @@ export default function Home() {
                   </div>
                 </div>
                 <DialogFooter>
-                  <DialogClose>
-                    <Button type='button'>Add</Button>
-                  </DialogClose>
+                  <Button type='button' onClick={addText}>
+                    Add
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
