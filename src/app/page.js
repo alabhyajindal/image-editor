@@ -15,6 +15,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/use-toast'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -24,19 +27,27 @@ const formSchema = z.object({
 })
 
 export default function Home() {
+  const { toast } = useToast()
+  const router = useRouter()
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
+      password: '',
     },
   })
 
   function onSubmit(values) {
-    console.log(values)
+    toast({
+      title: 'Login complete',
+      description: `Welcome ${values.email}`,
+    })
+    router.push('/editor')
   }
 
   return (
-    <main className='min-h-screen p-24 max-w-lg'>
+    <main className='mt-24 max-w-xs m-auto'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
           <FormField
@@ -44,13 +55,8 @@ export default function Home() {
             name='email'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    type='email'
-                    placeholder='you@example.com'
-                    {...field}
-                  />
+                  <Input placeholder='Email' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -62,17 +68,26 @@ export default function Home() {
             name='password'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type='password' {...field} />
+                  <Input placeholder='Password' type='password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type='submit'>Submit</Button>
+          <Button className='w-full' type='submit'>
+            Submit
+          </Button>
         </form>
       </Form>
+
+      <div className='mt-2'>
+        <Link href='/editor'>
+          <Button className='w-full' variant='outline'>
+            Skip
+          </Button>
+        </Link>
+      </div>
     </main>
   )
 }

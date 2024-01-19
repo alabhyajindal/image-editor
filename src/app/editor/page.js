@@ -92,7 +92,7 @@ export default function Home() {
   }
 
   return (
-    <main className='min-h-screen p-24 flex justify-center'>
+    <main className='flex justify-center'>
       <div className='mt-4'>
         {selectedImage ? (
           <div className='mb-2 flex justify-between px-1'>
@@ -166,9 +166,6 @@ export default function Home() {
           </div>
         ) : (
           <div className='flex flex-col items-center'>
-            <h2 className='text-3xl mb-12 font-semibold'>
-              Upload an image to get started
-            </h2>
             <Input
               type='file'
               name='imageInput'
