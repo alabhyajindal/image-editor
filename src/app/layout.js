@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
             </div>
           </header>
 
-          <section className=''>{children}</section>
+          <section className='mx-12'>{children}</section>
         </section>
 
         <Toaster />

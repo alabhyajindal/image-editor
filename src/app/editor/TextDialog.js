@@ -31,23 +31,15 @@ import toast from 'react-hot-toast'
 
 export default function TextDialog({
   FONTS,
-  removeImage,
   selectedImage,
   canvasRef,
+  textOpen,
+  setTextOpen,
 }) {
-  const [textOpen, setTextOpen] = useState(false)
   const [imageText, setImageText] = useState('')
   const [textColor, setTextColor] = useState('#fff')
   const [textFont, setTextFont] = useState('Noto Sans')
   const [textSize, setTextSize] = useState(48)
-
-  const downloadImage = () => {
-    const canvas = document.getElementById('canvas')
-    const link = document.createElement('a')
-    link.download = 'image.jpg'
-    link.href = canvas.toDataURL('image/jpg')
-    link.click()
-  }
 
   const updateTextSize = (value) => {
     if (value != '' && value >= 24 && value <= 140) {
@@ -95,13 +87,7 @@ export default function TextDialog({
 
   return (
     <div className='mb-2 flex justify-center gap-8'>
-      <Button variant='outline' onClick={removeImage}>
-        New
-      </Button>
       <Dialog open={textOpen} onOpenChange={setTextOpen}>
-        <DialogTrigger asChild>
-          <Button>Add Text</Button>
-        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add text</DialogTitle>
@@ -168,7 +154,6 @@ export default function TextDialog({
           </Button>
         </DialogContent>
       </Dialog>
-      <Button onClick={downloadImage}>Download</Button>
     </div>
   )
 }

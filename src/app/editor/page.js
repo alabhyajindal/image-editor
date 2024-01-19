@@ -34,6 +34,7 @@ const FONTS = ['Noto Sans', 'Martian Mono', 'Climate Crisis']
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
+  const [textOpen, setTextOpen] = useState(false)
   const canvasRef = useRef(null)
 
   function drawImageOnCanvas(imagePath) {
@@ -73,14 +74,60 @@ export default function Home() {
     setSelectedImage(null)
   }
 
+  const downloadImage = () => {
+    const canvas = document.getElementById('canvas')
+    const link = document.createElement('a')
+    link.download = 'image.jpg'
+    link.href = canvas.toDataURL('image/jpg')
+    link.click()
+  }
+
+  const grayscale = () => {
+    const img = new Image()
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+
+    ctx.drawImage(img, 0, 0)
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    const data = imageData.data
+    for (let i = 0; i < data.length; i += 4) {
+      const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
+      data[i] = avg
+      data[i + 1] = avg
+      data[i + 2] = avg
+    }
+    ctx.putImageData(imageData, 0, 0)
+  }
+
+  const invert = () => {
+    const img = new Image()
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+
+    ctx.drawImage(img, 0, 0)
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    const data = imageData.data
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = 255 - data[i] // red
+      data[i + 1] = 255 - data[i + 1] // green
+      data[i + 2] = 255 - data[i + 2] // blue
+    }
+    ctx.putImageData(imageData, 0, 0)
+  }
+
+  const reset = () => {
+    drawImageOnCanvas(selectedImage)
+  }
+
   return (
     <main className='flex flex-col items-center justify-center'>
       {selectedImage ? (
         <TextDialog
           FONTS={FONTS}
-          removeImage={removeImage}
           selectedImage={selectedImage}
           canvasRef={canvasRef}
+          textOpen={textOpen}
+          setTextOpen={setTextOpen}
         />
       ) : (
         <Input
@@ -92,8 +139,29 @@ export default function Home() {
           className='cursor-pointer max-w-xs'
         />
       )}
-      <div>
+      <div className='flex gap-6'>
         <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
+        {selectedImage ? (
+          <div className='flex flex-col justify-between'>
+            <div className='flex flex-col gap-4'>
+              <Button onClick={() => setTextOpen(true)}>Text</Button>
+              <Button onClick={grayscale}>Grayscale</Button>
+              <Button onClick={invert}>Invert</Button>
+              <Button
+                className='bg-green-600 hover:bg-green-500'
+                onClick={downloadImage}
+              >
+                Download
+              </Button>
+            </div>
+            <div className='flex flex-col gap-4'>
+              <Button className='bg-red-600 hover:bg-red-500' onClick={reset}>
+                Reset
+              </Button>
+              <Button onClick={removeImage}>New</Button>
+            </div>
+          </div>
+        ) : null}
       </div>
 
       {/* Loading fonts */}
