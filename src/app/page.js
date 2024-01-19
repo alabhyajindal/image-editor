@@ -16,11 +16,23 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
+import { HexColorPicker } from 'react-colorful'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
   const [textOpen, setTextOpen] = useState(false)
   const [imageText, setImageText] = useState('')
+  const [textColor, setTextColor] = useState('#020617')
+  const [textFont, setTextFont] = useState('sans-serif')
 
   function drawImageOnCanvas(imagePath) {
     const canvas = document.getElementById('canvas')
@@ -70,7 +82,8 @@ export default function Home() {
   const addText = () => {
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
-    ctx.font = '50px sans-serif'
+    ctx.font = `50px ${textFont}`
+    ctx.fillStyle = textColor
     ctx.fillText(imageText, 50, 50)
 
     setTextOpen(false)
@@ -93,31 +106,55 @@ export default function Home() {
                 <DialogHeader>
                   <DialogTitle>Add text</DialogTitle>
                 </DialogHeader>
-                <div className='grid gap-4 py-4'>
-                  <div className='grid grid-cols-4 items-center gap-4'>
-                    <Label htmlFor='text' className='text-right'>
+                <div className='flex flex-col gap-6 mt-4'>
+                  <div className='flex flex-col gap-2 items-start'>
+                    <Label htmlFor='text' className='text-right text-slate-600'>
                       Text
                     </Label>
                     <Input
                       id='text'
                       value={imageText}
                       onChange={(e) => setImageText(e.target.value)}
-                      className='col-span-3'
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-2 items-start'>
+                    <Label htmlFor='font' className='text-right text-slate-600'>
+                      Font
+                    </Label>
+                    <Select value={textFont} onValueChange={setTextFont}>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Choose a font' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value='serif'>Serif</SelectItem>
+                          <SelectItem value='sans-serif'>Sans-Serif</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className='flex'>
+                    <HexColorPicker
+                      className='flex-grow'
+                      color={textColor}
+                      onChange={setTextColor}
                     />
                   </div>
                 </div>
-                <DialogFooter>
-                  <Button type='button' onClick={addText}>
-                    Add
-                  </Button>
-                </DialogFooter>
+                <Button type='button' onClick={addText}>
+                  Add
+                </Button>
               </DialogContent>
             </Dialog>
             <Button onClick={downloadImage}>Download</Button>
           </div>
         ) : (
           <div className='flex flex-col items-center'>
-            <h2 className='text-3xl mb-12'>Choose an image to get started</h2>
+            <h2 className='text-3xl mb-12 font-semibold'>
+              Upload an image to get started
+            </h2>
             <Input
               type='file'
               name='imageInput'
