@@ -172,6 +172,9 @@ export default function Home() {
                       <SelectGroup>
                         <SelectItem value='serif'>Serif</SelectItem>
                         <SelectItem value='sans-serif'>Sans-Serif</SelectItem>
+                        <SelectItem value='Luckiest Guy'>
+                          Luckiest Guy
+                        </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -205,6 +208,11 @@ export default function Home() {
       <div>
         <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
       </div>
+
+      {/* Loading fonts */}
+      <section className='invisible'>
+        <div style={{ fontFamily: 'Luckiest Guy' }}>.</div>
+      </section>
     </main>
   )
 }
