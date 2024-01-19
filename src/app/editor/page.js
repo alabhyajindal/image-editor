@@ -29,6 +29,7 @@ import {
 import { Form } from '@/components/ui/form'
 import toast from 'react-hot-toast'
 import TextDialog from './TextDialog'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const FONTS = ['Noto Sans', 'Martian Mono', 'Climate Crisis']
 
@@ -130,14 +131,21 @@ export default function Home() {
           setTextOpen={setTextOpen}
         />
       ) : (
-        <Input
-          type='file'
-          name='imageInput'
-          id='imageInput'
-          onChange={handleImageUpload}
-          accept='image/*'
-          className='cursor-pointer max-w-xs'
-        />
+        <Card className='w-[350px] mx-auto mt-24'>
+          <CardHeader>
+            <CardTitle>Upload Image</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Input
+              type='file'
+              name='imageInput'
+              id='imageInput'
+              onChange={handleImageUpload}
+              accept='image/*'
+              className='max-w-xs'
+            />
+          </CardContent>
+        </Card>
       )}
       <div className='flex gap-6'>
         <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
@@ -155,10 +163,12 @@ export default function Home() {
               </Button>
             </div>
             <div className='flex flex-col gap-4'>
+              <Button variant='outline' onClick={removeImage}>
+                New
+              </Button>
               <Button className='bg-red-600 hover:bg-red-500' onClick={reset}>
                 Reset
               </Button>
-              <Button onClick={removeImage}>New</Button>
             </div>
           </div>
         ) : null}
