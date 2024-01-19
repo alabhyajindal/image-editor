@@ -7,16 +7,19 @@ import { Toggle } from '@/components/ui/toggle'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
-  const canvasRef = useRef(null)
+  const [imageText, setImageText] = useState('')
 
   function drawImageOnCanvas(imagePath) {
     const canvas = document.getElementById('canvas')
@@ -71,7 +74,34 @@ export default function Home() {
             <Button variant='outline' onClick={removeImage}>
               New
             </Button>
-            <Button>Add Text</Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Add Text</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add text</DialogTitle>
+                </DialogHeader>
+                <div className='grid gap-4 py-4'>
+                  <div className='grid grid-cols-4 items-center gap-4'>
+                    <Label htmlFor='text' className='text-right'>
+                      Text
+                    </Label>
+                    <Input
+                      id='text'
+                      value={imageText}
+                      onChange={(e) => setImageText(e.target.value)}
+                      className='col-span-3'
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <DialogClose>
+                    <Button type='button'>Add</Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
             <Button onClick={downloadImage}>Download</Button>
           </div>
         ) : (
@@ -88,7 +118,7 @@ export default function Home() {
           </div>
         )}
         <div className='max-w-xl'>
-          <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
+          <canvas className='w-full' id='canvas'></canvas>
         </div>
         {selectedImage ? <div className='mt-2'></div> : null}
       </div>
