@@ -45,12 +45,6 @@ export default function TextDialog({
   const [textFont, setTextFont] = useState('sans-serif')
   const [textSize, setTextSize] = useState(48)
 
-  const updateTextSize = (value) => {
-    if (value != '' && value >= 24 && value <= 140) {
-      setTextSize(value)
-    }
-  }
-
   const addText = () => {
     setTextOpen(false)
     const x = 100
@@ -117,7 +111,7 @@ export default function TextDialog({
               </Label>
               <Input
                 value={textSize}
-                onChange={(e) => updateTextSize(e.target.value)}
+                onChange={(e) => setTextSize(e.target.value)}
                 type='number'
                 min='24'
                 id='size'
@@ -145,27 +139,14 @@ export default function TextDialog({
               </Select>
             </div>
 
-            <div className='flex justify-around'>
-              <div className='flex flex-col gap-6'>
-                <Label className='text-slate-600'>Fill</Label>
-                <div className='flex'>
-                  <HexColorPicker
-                    className='flex-grow'
-                    color={textFill}
-                    onChange={setTextFill}
-                  />
-                </div>
-              </div>
-
-              <div className='flex flex-col gap-6'>
-                <Label className='text-slate-600'>Stroke</Label>
-                <div className='flex'>
-                  <HexColorPicker
-                    className='flex-grow'
-                    color={textStroke}
-                    onChange={setTextStroke}
-                  />
-                </div>
+            <div className='flex flex-col gap-6'>
+              <Label className='text-slate-600'>Fill</Label>
+              <div className='flex'>
+                <HexColorPicker
+                  className='flex-grow'
+                  color={textFill}
+                  onChange={setTextFill}
+                />
               </div>
             </div>
           </div>

@@ -225,43 +225,43 @@ export default function Home() {
           setTexts={setTexts}
         />
       ) : (
-        <Card className='w-[350px] mx-auto mt-24'>
-          <CardHeader>
-            <CardTitle>Upload Image</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Input
-              type='file'
-              name='imageInput'
-              id='imageInput'
-              onChange={handleImageUpload}
-              accept='image/*'
-              className='max-w-xs'
-            />
-          </CardContent>
-        </Card>
+        <div>
+          <Card className='w-[350px] mx-auto mt-24'>
+            <CardHeader>
+              <CardTitle>Upload Image</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Input
+                type='file'
+                name='imageInput'
+                id='imageInput'
+                onChange={handleImageUpload}
+                accept='image/*'
+                className='max-w-xs'
+              />
+            </CardContent>
+          </Card>
+        </div>
       )}
-      <div className='flex gap-6'>
+      <div>
         <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
+      </div>
+      <div>
         {selectedImage ? (
-          <div className='flex flex-col justify-between'>
-            <div className='flex flex-col gap-4'>
-              <Button onClick={() => setTextOpen(true)}>Text</Button>
-              <Button onClick={grayscale}>Grayscale</Button>
-              <Button onClick={invert}>Invert</Button>
-              <Button
-                className='bg-green-600 hover:bg-green-500'
-                onClick={downloadImage}
-              >
-                Download
-              </Button>
-            </div>
-            <div className='flex flex-col gap-4'>
-              <Button variant='outline' onClick={reset}>
-                Reset
-              </Button>
-              <Button onClick={removeImage}>New</Button>
-            </div>
+          <div className='my-12 grid grid-cols-3 md:flex gap-4'>
+            <Button onClick={() => setTextOpen(true)}>Text</Button>
+            <Button onClick={grayscale}>Grayscale</Button>
+            <Button onClick={invert}>Invert</Button>
+            <Button
+              className='bg-green-600 hover:bg-green-500'
+              onClick={downloadImage}
+            >
+              Download
+            </Button>
+            <Button variant='outline' onClick={reset}>
+              Reset
+            </Button>
+            <Button onClick={removeImage}>New</Button>
           </div>
         ) : null}
       </div>
