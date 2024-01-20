@@ -38,18 +38,13 @@ export default function TextDialog({
   texts,
   setTexts,
 }) {
-  const [textValue, setTextValue] = useState('yoooo')
+  const [textValue, setTextValue] = useState('')
   const [textFill, setTextFill] = useState('#fff')
   const [textFont, setTextFont] = useState('Climate Crisis')
   const [textSize, setTextSize] = useState(48)
 
   const addText = () => {
     if (!textValue) return
-    if (!textSize) return
-    if (textSize < 24 || textSize > 120) {
-      toast.error('Please enter a text size between 24 and 120')
-      return
-    }
 
     const x = 100
     const y = 100

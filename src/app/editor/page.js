@@ -33,11 +33,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { produce } from 'immer'
 import BorderDialog from './BorderDialog'
 
-const FONTS = [
-  // 'Noto Sans',
-  // 'Martian Mono',
-  'Climate Crisis',
-]
+const FONTS = ['Noto Sans', 'Martian Mono', 'Climate Crisis']
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
@@ -266,7 +262,6 @@ export default function Home() {
         ) : null}
       </div>
 
-      {/* Loading fonts */}
       <section className='invisible'>
         {FONTS.map((font, index) => (
           <div key={index} style={{ fontFamily: font }}>
