@@ -62,7 +62,6 @@ export default function Home() {
           cursorY <= text.y &&
           cursorY >= text.y - text.height
         ) {
-          console.log(index)
           setSelectedText(index)
         }
       })
@@ -103,65 +102,54 @@ export default function Home() {
   }, [selectedText, texts])
 
   useEffect(() => {
-    function draw() {
-      console.log('drawing')
-      const canvas = canvasRef.current
-      const ctx = canvas.getContext('2d')
-
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      // Load image
-      const img = new Image()
-      img.src = selectedImage
-      img.onload = function () {
-        // Draw image
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-
-        // Draw texts
-        for (let i = 0; i < texts.length; i++) {
-          let text = texts[i]
-          const { imageText, x, y, textSize, textFont, textStroke, textFill } =
-            text
-          ctx.font = `${textSize}px ${textFont}`
-          ctx.lineWidth = textSize * 0.1
-          ctx.strokeStyle = textStroke
-          ctx.strokeText(imageText, x, y)
-          ctx.fillStyle = textFill
-          ctx.fillText(imageText, x, y)
-        }
-      }
-    }
-    draw()
-  }, [selectedImage, texts])
-
-  function drawImageOnCanvas(imagePath) {
+    if (!selectedImage) return
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
-    const img = new Image()
-    img.src = imagePath
-    img.onload = function () {
-      if (img.height > img.width) {
-        canvas.width = 500
-        const ratio = img.height / img.width
-        canvas.height = canvas.width * ratio
-      } else {
-        canvas.height = 500
-        const ratio = img.width / img.height
-        canvas.width = canvas.height * ratio
-      }
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+    // Draw image
+    ctx.drawImage(selectedImage, 0, 0, canvas.width, canvas.height)
+
+    // Draw texts
+    for (let i = 0; i < texts.length; i++) {
+      let text = texts[i]
+      const { imageText, x, y, textSize, textFont, textStroke, textFill } = text
+      ctx.font = `${textSize}px ${textFont}`
+      ctx.lineWidth = textSize * 0.1
+      ctx.strokeStyle = textStroke
+      ctx.strokeText(imageText, x, y)
+      ctx.fillStyle = textFill
+      ctx.fillText(imageText, x, y)
     }
-  }
+  }, [selectedImage, texts])
 
-  const handleImageUpload = async (e) => {
+  const loadAndDrawImage = async (e) => {
     const file = e.target.files[0]
     if (file) {
       const image = URL.createObjectURL(file)
-      setSelectedImage(image)
-      drawImageOnCanvas(image)
+      const canvas = canvasRef.current
+      const ctx = canvas.getContext('2d')
+
+      const img = new Image()
+      img.src = image
+
+      img.onload = function () {
+        setSelectedImage(img)
+
+        if (img.height > img.width) {
+          canvas.width = 500
+          const ratio = img.height / img.width
+          canvas.height = canvas.width * ratio
+        } else {
+          canvas.height = 500
+          const ratio = img.width / img.height
+          canvas.width = canvas.height * ratio
+        }
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      }
     }
   }
 
@@ -216,7 +204,12 @@ export default function Home() {
   }
 
   const reset = () => {
-    drawImageOnCanvas(selectedImage)
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(selectedImage, 0, 0, canvas.width, canvas.height)
+
     setTexts([])
     setSelectedText(-1)
   }
@@ -244,7 +237,7 @@ export default function Home() {
                 type='file'
                 name='imageInput'
                 id='imageInput'
-                onChange={handleImageUpload}
+                onChange={loadAndDrawImage}
                 accept='image/*'
                 className='max-w-xs'
               />
@@ -259,8 +252,8 @@ export default function Home() {
         {selectedImage ? (
           <div className='my-12 grid grid-cols-3 md:flex gap-4'>
             <Button onClick={() => setTextOpen(true)}>Text</Button>
-            <Button onClick={grayscale}>Grayscale</Button>
-            <Button onClick={invert}>Invert</Button>
+            {/* <Button onClick={grayscale}>Grayscale</Button>
+            <Button onClick={invert}>Invert</Button> */}
             <Button
               className='bg-green-600 hover:bg-green-500'
               onClick={downloadImage}
