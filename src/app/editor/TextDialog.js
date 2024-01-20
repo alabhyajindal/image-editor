@@ -37,7 +37,7 @@ export default function TextDialog({
   setTextOpen,
 }) {
   const [imageText, setImageText] = useState('')
-  const [textColor, setTextColor] = useState('#fff')
+  const [textFill, setTextFill] = useState('#fff')
   const [textFont, setTextFont] = useState('Noto Sans')
   const [textSize, setTextSize] = useState(48)
 
@@ -51,7 +51,7 @@ export default function TextDialog({
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
     ctx.font = `${textSize}px ${textFont}`
-    ctx.fillStyle = textColor
+    ctx.fillStyle = textFill
     ctx.fillText(imageText, x, y)
 
     setImageText('')
@@ -95,7 +95,7 @@ export default function TextDialog({
 
           <div className='flex flex-col gap-6 mt-4'>
             <div className='flex flex-col gap-2 items-start'>
-              <Label htmlFor='text' className='text-right text-slate-600'>
+              <Label htmlFor='text' className='text-slate-600'>
                 Text
               </Label>
               <Input
@@ -106,7 +106,7 @@ export default function TextDialog({
             </div>
 
             <div className='flex flex-col gap-2 items-start'>
-              <Label htmlFor='size' className='text-right text-slate-600'>
+              <Label htmlFor='size' className='text-slate-600'>
                 Size
               </Label>
               <Input
@@ -119,7 +119,7 @@ export default function TextDialog({
             </div>
 
             <div className='flex flex-col gap-2 items-start'>
-              <Label htmlFor='font' className='text-right text-slate-600'>
+              <Label htmlFor='font' className='text-slate-600'>
                 Font
               </Label>
               <Select value={textFont} onValueChange={setTextFont}>
@@ -138,12 +138,15 @@ export default function TextDialog({
               </Select>
             </div>
 
-            <div className='flex'>
-              <HexColorPicker
-                className='flex-grow'
-                color={textColor}
-                onChange={setTextColor}
-              />
+            <div className='flex flex-col gap-4'>
+              <Label className='text-slate-600'>Fill</Label>
+              <div className='flex'>
+                <HexColorPicker
+                  className='flex-grow'
+                  color={textFill}
+                  onChange={setTextFill}
+                />
+              </div>
             </div>
           </div>
           <Button
