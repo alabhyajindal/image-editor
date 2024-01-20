@@ -237,11 +237,9 @@ export default function Home() {
         </div>
       )}
       <div>
-        <canvas ref={canvasRef} className='w-full' id='canvas'></canvas>
-      </div>
-      <div>
+        <canvas ref={canvasRef} className='w-full mt-2' id='canvas'></canvas>
         {selectedImage ? (
-          <div className='my-12 grid grid-cols-4 grid-rows-2 gap-6'>
+          <div className='mt-12 grid grid-cols-4 grid-rows-2 gap-6'>
             <Button className='col-span-2' onClick={() => setTextOpen(true)}>
               Text
             </Button>

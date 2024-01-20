@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <section className='flex flex-col gap-12 min-h-screen'>
+        <section className='flex flex-col min-h-screen'>
           <header className='flex items-center justify-between w-full p-4'>
             <h1 className='text-2xl font-semibold'>
               <Link href='/'>Image Editor</Link>
