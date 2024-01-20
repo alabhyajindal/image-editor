@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { Slider } from '@/components/ui/slider'
 import { Label } from '@radix-ui/react-label'
 import { useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
@@ -23,15 +24,9 @@ export default function BorderDialog({
   canvasRef,
 }) {
   const [borderColor, setBorderColor] = useState('#38f')
-  const [borderSize, setBorderSize] = useState(12)
+  const [borderSize, setBorderSize] = useState(24)
 
   const addBorder = () => {
-    if (!borderSize) return
-    if (borderSize < 1 || borderSize > 100) {
-      toast.error('Please enter a border size between 1 and 100')
-      return
-    }
-
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
@@ -51,21 +46,26 @@ export default function BorderDialog({
             <DialogTitle>Add border</DialogTitle>
           </DialogHeader>
 
-          <div className='flex flex-col gap-2 items-start'>
-            <Label htmlFor='borderSize' className='text-slate-600'>
-              Size
-            </Label>
-            <Input
-              name='borderSize'
-              value={borderSize}
-              onChange={(e) => setBorderSize(e.target.value)}
-              type='number'
-              min='4'
+          <div className='flex flex-col gap-6 '>
+            <div className='text-slate-600 flex items-center justify-between'>
+              <p>Size</p>
+              <p className='ml-1 text-slate-400 text-sm'>{borderSize}</p>
+            </div>
+
+            <Slider
+              value={[borderSize]}
+              onValueChange={(v) => setBorderSize(v)}
+              max={100}
+              min={1}
+              step={1}
             />
           </div>
 
-          <div className='flex flex-col gap-6'>
-            <Label className='text-slate-600'>Color</Label>
+          <div className='flex flex-col gap-4'>
+            <div className='text-slate-600 flex items-center justify-between'>
+              <p>Color</p>
+              <p className='ml-1 text-slate-400 text-sm'>{borderColor}</p>
+            </div>
             <div className='flex'>
               <HexColorPicker
                 className='flex-grow'
