@@ -27,8 +27,9 @@ export default function BorderDialog({
 
   const addBorder = () => {
     if (!borderSize) return
-    if (borderSize < 4 || borderSize > 50) {
-      toast.error('Please enter a border size between 4 and 50')
+    if (borderSize < 1 || borderSize > 100) {
+      toast.error('Please enter a border size between 1 and 100')
+      return
     }
 
     const canvas = canvasRef.current
@@ -39,13 +40,6 @@ export default function BorderDialog({
     ctx.strokeRect(0, 0, canvas.width, canvas.height)
 
     setBorder({ size: borderSize, color: borderColor })
-    setBorderOpen(false)
-
-    // Add to border array, an object with these two info
-  }
-
-  const removeBorder = () => {
-    setBorder({})
     setBorderOpen(false)
   }
 
@@ -84,11 +78,6 @@ export default function BorderDialog({
           <Button onClick={addBorder} className='mt-4'>
             {Object.keys(border).length > 0 ? 'Update' : 'Add'}
           </Button>
-          {Object.keys(border).length > 0 ? (
-            <Button onClick={removeBorder} variant='outline'>
-              Remove
-            </Button>
-          ) : null}
         </DialogContent>
       </Dialog>
     </div>

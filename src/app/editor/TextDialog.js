@@ -1,6 +1,5 @@
 'use client'
 
-// import Image from 'next/image'
 import { useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Toggle } from '@/components/ui/toggle'
@@ -32,7 +31,6 @@ import { produce } from 'immer'
 
 export default function TextDialog({
   FONTS,
-  selectedImage,
   canvasRef,
   textOpen,
   setTextOpen,
@@ -41,7 +39,7 @@ export default function TextDialog({
 }) {
   const [textValue, setTextValue] = useState('yoooo')
   const [textFill, setTextFill] = useState('#fff')
-  const [textFont, setTextFont] = useState('sans-serif')
+  const [textFont, setTextFont] = useState('Climate Crisis')
   const [textSize, setTextSize] = useState(48)
 
   const addText = () => {
@@ -49,6 +47,7 @@ export default function TextDialog({
     if (!textSize) return
     if (textSize < 24 || textSize > 120) {
       toast.error('Please enter a text size between 24 and 120')
+      return
     }
 
     const x = 100

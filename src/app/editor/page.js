@@ -186,12 +186,15 @@ export default function Home() {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.drawImage(selectedImage, 0, 0, canvas.width, canvas.height)
-
     setTexts([])
     setSelectedText(-1)
     setBorder({})
+
+    ctx.lineWidth = 0
+    ctx.strokeStyle = 'transparent'
+    ctx.strokeRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(selectedImage, 0, 0, canvas.width, canvas.height)
   }
 
   return (
@@ -200,7 +203,6 @@ export default function Home() {
         <div>
           <TextDialog
             FONTS={FONTS}
-            selectedImage={selectedImage}
             canvasRef={canvasRef}
             textOpen={textOpen}
             setTextOpen={setTextOpen}
