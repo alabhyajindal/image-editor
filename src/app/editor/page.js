@@ -30,8 +30,13 @@ import { Form } from '@/components/ui/form'
 import toast from 'react-hot-toast'
 import TextDialog from './TextDialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { produce } from 'immer'
 
-const FONTS = ['Noto Sans', 'Martian Mono', 'Climate Crisis']
+const FONTS = [
+  // 'Noto Sans',
+  // 'Martian Mono',
+  'Climate Crisis',
+]
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
@@ -41,18 +46,13 @@ export default function Home() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
-    const handleMouseClick = (e) => {
-      console.log(texts)
-      console.log(selectedText)
-
+    const handleMouseDown = (e) => {
       const canvas = canvasRef.current
       const canvasRect = canvas.getBoundingClientRect()
 
       // Calculate the cursor position within the canvas
       const cursorX = e.clientX - canvasRect.left
       const cursorY = e.clientY - canvasRect.top
-
-      console.log('Cursor clicked at:', cursorX, cursorY)
 
       texts.forEach((text, index) => {
         if (
@@ -61,18 +61,74 @@ export default function Home() {
           cursorY <= text.y &&
           cursorY >= text.y - text.height
         ) {
+          console.log(text)
           setSelectedText(index)
         }
       })
     }
 
+    const handleMouseMove = (e) => {
+      if (selectedText < 0) return
+
+      const canvas = canvasRef.current
+      const canvasRect = canvas.getBoundingClientRect()
+      const cursorX = e.clientX - canvasRect.left
+      const cursorY = e.clientY - canvasRect.top
+
+      setTexts(
+        produce((draft) => {
+          draft[selectedText].x = cursorX
+          draft[selectedText].y = cursorY
+        })
+      )
+    }
+
+    const handleMouseUp = (e) => {
+      setSelectedText(-1)
+    }
+
     const canvas = canvasRef.current
-    canvas.addEventListener('click', handleMouseClick)
+    canvas.addEventListener('mousedown', handleMouseDown)
+    canvas.addEventListener('mouseup', handleMouseUp)
+    canvas.addEventListener('mousemove', handleMouseMove)
 
     return () => {
-      canvas.removeEventListener('click', handleMouseClick)
+      canvas.removeEventListener('mousedown', handleMouseDown)
+      canvas.removeEventListener('mouseup', handleMouseUp)
+      canvas.removeEventListener('mousemove', handleMouseMove)
     }
   }, [selectedText, texts])
+
+  useEffect(() => {
+    function draw() {
+      console.log('drawing')
+      console.log(texts)
+      const canvas = canvasRef.current
+      const ctx = canvas.getContext('2d')
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      // Fill canvas with temp color
+      ctx.fillStyle = 'black'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      // drawImageOnCanvas(selectedImage)
+
+      // Draw texts
+      for (let i = 0; i < texts.length; i++) {
+        let text = texts[i]
+        const { imageText, x, y, textSize, textFont, textStroke, textFill } =
+          text
+        ctx.font = `${textSize}px ${textFont}`
+        ctx.lineWidth = textSize * 0.1
+        ctx.strokeStyle = textStroke
+        ctx.strokeText(imageText, x, y)
+        ctx.fillStyle = textFill
+        ctx.fillText(imageText, x, y)
+      }
+    }
+    draw()
+  }, [texts])
 
   function drawImageOnCanvas(imagePath) {
     const canvas = canvasRef.current

@@ -39,7 +39,7 @@ export default function TextDialog({
   texts,
   setTexts,
 }) {
-  const [imageText, setImageText] = useState('')
+  const [imageText, setImageText] = useState('yoooo')
   const [textFill, setTextFill] = useState('#fff')
   const [textStroke, setTextStroke] = useState('#000')
   const [textFont, setTextFont] = useState('Climate Crisis')
@@ -51,20 +51,21 @@ export default function TextDialog({
     }
   }
 
-  const addText = (x, y) => {
-    const canvas = document.getElementById('canvas')
+  const addText = () => {
+    setTextOpen(false)
+    const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
-    ctx.font = `${textSize}px ${textFont}`
 
-    ctx.lineWidth = textSize * 0.1
-    ctx.strokeStyle = textStroke
-    ctx.strokeText(imageText, x, y)
-
-    ctx.fillStyle = textFill
-    ctx.fillText(imageText, x, y)
-
-    const tempText = { text: imageText, x, y }
-    tempText.width = ctx.measureText(tempText.text).width
+    const tempText = {
+      x: 100,
+      y: 100,
+      imageText,
+      textSize,
+      textFont,
+      textStroke,
+      textFill,
+    }
+    tempText.width = ctx.measureText(tempText.imageText).width
     tempText.height = textSize
 
     setTexts(
@@ -74,34 +75,6 @@ export default function TextDialog({
     )
 
     setImageText('')
-  }
-
-  const promptForTextPosition = () => {
-    const toastId = toast.loading('Click on the image to add text', {
-      position: 'bottom-center',
-    })
-    setTextOpen(false)
-    const canvas = canvasRef.current
-
-    const clickHandler = (event) => {
-      const rect = canvas.getBoundingClientRect()
-      const x = event.clientX - rect.left
-      const y = event.clientY - rect.top
-
-      addText(x, y)
-      canvas.removeEventListener('click', clickHandler)
-      toast.dismiss(toastId)
-    }
-
-    const keydownHandler = (event) => {
-      if (event.key === 'Escape') {
-        toast.dismiss(toastId)
-      }
-      document.removeEventListener('keydown', keydownHandler)
-    }
-
-    canvas.addEventListener('click', clickHandler)
-    document.addEventListener('keydown', keydownHandler)
   }
 
   return (
@@ -183,7 +156,7 @@ export default function TextDialog({
           </div>
           <Button
             type='button'
-            onClick={() => (imageText ? promptForTextPosition() : null)}
+            onClick={() => (imageText ? addText() : null)}
             className='mt-4'
           >
             Add
