@@ -170,39 +170,6 @@ export default function Home() {
     link.click()
   }
 
-  const grayscale = () => {
-    const img = new Image()
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-
-    ctx.drawImage(img, 0, 0)
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    const data = imageData.data
-    for (let i = 0; i < data.length; i += 4) {
-      const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
-      data[i] = avg
-      data[i + 1] = avg
-      data[i + 2] = avg
-    }
-    ctx.putImageData(imageData, 0, 0)
-  }
-
-  const invert = () => {
-    const img = new Image()
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-
-    ctx.drawImage(img, 0, 0)
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    const data = imageData.data
-    for (let i = 0; i < data.length; i += 4) {
-      data[i] = 255 - data[i]
-      data[i + 1] = 255 - data[i + 1]
-      data[i + 2] = 255 - data[i + 2]
-    }
-    ctx.putImageData(imageData, 0, 0)
-  }
-
   const reset = () => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -252,8 +219,6 @@ export default function Home() {
         {selectedImage ? (
           <div className='my-12 grid grid-cols-3 md:flex gap-4'>
             <Button onClick={() => setTextOpen(true)}>Text</Button>
-            {/* <Button onClick={grayscale}>Grayscale</Button>
-            <Button onClick={invert}>Invert</Button> */}
             <Button
               className='bg-green-600 hover:bg-green-500'
               onClick={downloadImage}
@@ -269,13 +234,13 @@ export default function Home() {
       </div>
 
       {/* Loading fonts */}
-      {/* <section className='invisible'>
+      <section className='invisible'>
         {FONTS.map((font, index) => (
           <div key={index} style={{ fontFamily: font }}>
             .
           </div>
         ))}
-      </section> */}
+      </section>
     </main>
   )
 }

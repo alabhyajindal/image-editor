@@ -134,7 +134,6 @@ export default function TextDialog({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value='sans-serif'>Sans Serif</SelectItem>
                     {FONTS.map((font, index) => (
                       <SelectItem key={index} value={font}>
                         {font}
