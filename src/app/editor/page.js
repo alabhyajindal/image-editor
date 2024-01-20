@@ -115,13 +115,13 @@ export default function Home() {
     // Draw texts
     for (let i = 0; i < texts.length; i++) {
       let text = texts[i]
-      const { imageText, x, y, textSize, textFont, textStroke, textFill } = text
+      const { textValue, x, y, textSize, textFont, textStroke, textFill } = text
       ctx.font = `${textSize}px ${textFont}`
       ctx.lineWidth = textSize * 0.1
       ctx.strokeStyle = textStroke
-      ctx.strokeText(imageText, x, y)
+      ctx.strokeText(textValue, x, y)
       ctx.fillStyle = textFill
-      ctx.fillText(imageText, x, y)
+      ctx.fillText(textValue, x, y)
     }
   }, [selectedImage, texts])
 

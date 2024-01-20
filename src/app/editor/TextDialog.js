@@ -39,13 +39,19 @@ export default function TextDialog({
   texts,
   setTexts,
 }) {
-  const [imageText, setImageText] = useState('yoooo')
+  const [textValue, setTextValue] = useState('yoooo')
   const [textFill, setTextFill] = useState('#fff')
   const [textStroke, setTextStroke] = useState('#000')
   const [textFont, setTextFont] = useState('sans-serif')
   const [textSize, setTextSize] = useState(48)
 
   const addText = () => {
+    if (!textValue) return
+    if (!textSize) return
+    if (textSize < 24 || textSize > 120) {
+      toast.error('Please enter a text size between 24 and 120')
+    }
+
     setTextOpen(false)
     const x = 100
     const y = 100
@@ -57,17 +63,17 @@ export default function TextDialog({
     ctx.lineWidth = textSize * 0.1
     ctx.strokeStyle = textStroke
 
-    ctx.strokeText(imageText, x, y)
+    ctx.strokeText(textValue, x, y)
     ctx.fillStyle = textFill
-    ctx.fillText(imageText, x, y)
+    ctx.fillText(textValue, x, y)
 
-    const width = ctx.measureText(imageText).width
+    const width = ctx.measureText(textValue).width
     const height = textSize
 
     const tempText = {
       x,
       y,
-      imageText,
+      textValue,
       textSize,
       textFont,
       textStroke,
@@ -82,7 +88,7 @@ export default function TextDialog({
       })
     )
 
-    setImageText('')
+    setTextValue('')
   }
 
   return (
@@ -100,8 +106,8 @@ export default function TextDialog({
               </Label>
               <Input
                 id='text'
-                value={imageText}
-                onChange={(e) => setImageText(e.target.value)}
+                value={textValue}
+                onChange={(e) => setTextValue(e.target.value)}
               />
             </div>
 
@@ -150,11 +156,7 @@ export default function TextDialog({
               </div>
             </div>
           </div>
-          <Button
-            type='button'
-            onClick={() => (imageText ? addText() : null)}
-            className='mt-4'
-          >
+          <Button type='button' onClick={addText} className='mt-4'>
             Add
           </Button>
         </DialogContent>
