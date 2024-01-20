@@ -54,10 +54,12 @@ export default function Home() {
       const canvas = canvasRef.current
       const ctx = canvas.getContext('2d')
       const canvasRect = canvas.getBoundingClientRect()
+      const clientX = e.clientX
+      const clientY = e.clientY
 
       // Calculate the cursor position within the canvas
-      const cursorX = e.clientX - canvasRect.left
-      const cursorY = e.clientY - canvasRect.top
+      const cursorX = clientX - canvasRect.left
+      const cursorY = clientY - canvasRect.top
 
       texts.forEach((text, index) => {
         if (
@@ -76,8 +78,11 @@ export default function Home() {
 
       const canvas = canvasRef.current
       const canvasRect = canvas.getBoundingClientRect()
-      const cursorX = e.clientX - canvasRect.left
-      const cursorY = e.clientY - canvasRect.top
+      const clientX = e.clientX
+      const clientY = e.clientY
+
+      const cursorX = clientX - canvasRect.left
+      const cursorY = clientY - canvasRect.top
 
       const text = texts[selectedText]
 
@@ -129,7 +134,7 @@ export default function Home() {
     }
 
     // Draw border
-    if (border) {
+    if (Object.keys(border).length > 0) {
       ctx.lineWidth = border.size
       ctx.strokeStyle = border.color
       ctx.strokeRect(0, 0, canvas.width, canvas.height)
@@ -239,7 +244,7 @@ export default function Home() {
       <div>
         <canvas ref={canvasRef} className='w-full mt-2' id='canvas'></canvas>
         {selectedImage ? (
-          <div className='mt-12 grid grid-cols-4 grid-rows-2 gap-6'>
+          <div className='mt-12 grid grid-cols-4 grid-rows-2 gap-4'>
             <Button className='col-span-2' onClick={() => setTextOpen(true)}>
               Text
             </Button>
