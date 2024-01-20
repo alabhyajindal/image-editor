@@ -46,7 +46,7 @@ export default function Home() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
-    const handleMouseDown = (e) => {
+    const handleStart = (e) => {
       const canvas = canvasRef.current
       const ctx = canvas.getContext('2d')
       const canvasRect = canvas.getBoundingClientRect()
@@ -68,7 +68,7 @@ export default function Home() {
       })
     }
 
-    const handleMouseMove = (e) => {
+    const handleMove = (e) => {
       if (selectedText < 0) return
 
       const canvas = canvasRef.current
@@ -86,19 +86,19 @@ export default function Home() {
       )
     }
 
-    const handleMouseUp = (e) => {
+    const handleEnd = (e) => {
       setSelectedText(-1)
     }
 
     const canvas = canvasRef.current
-    canvas.addEventListener('mousedown', handleMouseDown)
-    canvas.addEventListener('mouseup', handleMouseUp)
-    canvas.addEventListener('mousemove', handleMouseMove)
+    canvas.addEventListener('mousedown', handleStart)
+    canvas.addEventListener('mouseup', handleEnd)
+    canvas.addEventListener('mousemove', handleMove)
 
     return () => {
-      canvas.removeEventListener('mousedown', handleMouseDown)
-      canvas.removeEventListener('mouseup', handleMouseUp)
-      canvas.removeEventListener('mousemove', handleMouseMove)
+      canvas.removeEventListener('mousedown', handleStart)
+      canvas.removeEventListener('mouseup', handleEnd)
+      canvas.removeEventListener('mousemove', handleMove)
     }
   }, [selectedText, texts])
 
