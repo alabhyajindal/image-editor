@@ -52,8 +52,8 @@ export default function Home() {
   }
 
   return (
-    <div className='mt-24'>
-      <Card>
+    <div className='mt-24 flex flex-col items-center'>
+      <Card className='w-[300px]'>
         <CardHeader>
           <CardTitle>Login</CardTitle>
         </CardHeader>

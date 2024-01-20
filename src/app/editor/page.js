@@ -198,7 +198,7 @@ export default function Home() {
   }
 
   return (
-    <main className='flex flex-col items-center justify-center'>
+    <main className='flex flex-col items-center'>
       {selectedImage ? (
         <div>
           <TextDialog
@@ -219,7 +219,7 @@ export default function Home() {
         </div>
       ) : (
         <div>
-          <Card className='w-[350px] mx-auto mt-24'>
+          <Card className='w-[300px] mx-auto mt-24'>
             <CardHeader>
               <CardTitle>Upload Image</CardTitle>
             </CardHeader>
