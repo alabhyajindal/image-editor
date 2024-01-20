@@ -1,7 +1,7 @@
 'use client'
 
 // import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Toggle } from '@/components/ui/toggle'
 import { Button } from '@/components/ui/button'
@@ -36,7 +36,43 @@ const FONTS = ['Noto Sans', 'Martian Mono', 'Climate Crisis']
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
   const [textOpen, setTextOpen] = useState(false)
+  const [texts, setTexts] = useState([])
+  const [selectedText, setSelectedText] = useState(-1)
   const canvasRef = useRef(null)
+
+  useEffect(() => {
+    const handleMouseClick = (e) => {
+      console.log(texts)
+      console.log(selectedText)
+
+      const canvas = canvasRef.current
+      const canvasRect = canvas.getBoundingClientRect()
+
+      // Calculate the cursor position within the canvas
+      const cursorX = e.clientX - canvasRect.left
+      const cursorY = e.clientY - canvasRect.top
+
+      console.log('Cursor clicked at:', cursorX, cursorY)
+
+      texts.forEach((text, index) => {
+        if (
+          cursorX >= text.x &&
+          cursorX <= text.x + text.width &&
+          cursorY <= text.y &&
+          cursorY >= text.y - text.height
+        ) {
+          setSelectedText(index)
+        }
+      })
+    }
+
+    const canvas = canvasRef.current
+    canvas.addEventListener('click', handleMouseClick)
+
+    return () => {
+      canvas.removeEventListener('click', handleMouseClick)
+    }
+  }, [selectedText, texts])
 
   function drawImageOnCanvas(imagePath) {
     const canvas = canvasRef.current
@@ -129,6 +165,8 @@ export default function Home() {
           canvasRef={canvasRef}
           textOpen={textOpen}
           setTextOpen={setTextOpen}
+          texts={texts}
+          setTexts={setTexts}
         />
       ) : (
         <Card className='w-[350px] mx-auto mt-24'>

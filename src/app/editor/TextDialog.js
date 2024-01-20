@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/select'
 import { Form } from '@/components/ui/form'
 import toast from 'react-hot-toast'
+import { produce } from 'immer'
 
 export default function TextDialog({
   FONTS,
@@ -35,6 +36,8 @@ export default function TextDialog({
   canvasRef,
   textOpen,
   setTextOpen,
+  texts,
+  setTexts,
 }) {
   const [imageText, setImageText] = useState('')
   const [textFill, setTextFill] = useState('#fff')
@@ -59,6 +62,16 @@ export default function TextDialog({
 
     ctx.fillStyle = textFill
     ctx.fillText(imageText, x, y)
+
+    const tempText = { text: imageText, x, y }
+    tempText.width = ctx.measureText(tempText.text).width
+    tempText.height = textSize
+
+    setTexts(
+      produce((draft) => {
+        draft.push(tempText)
+      })
+    )
 
     setImageText('')
   }
