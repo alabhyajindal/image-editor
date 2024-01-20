@@ -48,7 +48,7 @@ export default function BorderDialog({
 
           <div className='flex flex-col gap-6 '>
             <div className='text-slate-600 flex items-center justify-between'>
-              <p>Size</p>
+              <p className='font-medium text-sm'>Size</p>
               <p className='ml-1 text-slate-400 text-sm'>{borderSize}</p>
             </div>
 
@@ -63,7 +63,7 @@ export default function BorderDialog({
 
           <div className='flex flex-col gap-4'>
             <div className='text-slate-600 flex items-center justify-between'>
-              <p>Color</p>
+              <p className='font-medium text-sm'>Color</p>
               <p className='ml-1 text-slate-400 text-sm'>{borderColor}</p>
             </div>
             <div className='flex'>

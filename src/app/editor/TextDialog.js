@@ -28,6 +28,7 @@ import {
 import { Form } from '@/components/ui/form'
 import toast from 'react-hot-toast'
 import { produce } from 'immer'
+import { Slider } from '@/components/ui/slider'
 
 export default function TextDialog({
   FONTS,
@@ -100,9 +101,10 @@ export default function TextDialog({
 
           <div className='flex flex-col gap-6 mt-4'>
             <div className='flex flex-col gap-2 items-start'>
-              <Label htmlFor='text' className='text-slate-600'>
-                Text
-              </Label>
+              <div className='text-slate-600'>
+                <p className='font-medium text-sm'>Text</p>
+              </div>
+
               <Input
                 id='text'
                 value={textValue}
@@ -110,23 +112,25 @@ export default function TextDialog({
               />
             </div>
 
-            <div className='flex flex-col gap-2 items-start'>
-              <Label htmlFor='size' className='text-slate-600'>
-                Size
-              </Label>
-              <Input
-                value={textSize}
-                onChange={(e) => setTextSize(e.target.value)}
-                type='number'
-                min='24'
-                id='size'
+            <div className='flex flex-col gap-2'>
+              <div className='text-slate-600 flex items-center justify-between'>
+                <p className='font-medium text-sm'>Size</p>
+                <p className='ml-1 text-slate-400 text-sm'>{textSize}</p>
+              </div>
+
+              <Slider
+                value={[textSize]}
+                onValueChange={(v) => setTextSize(v)}
+                max={100}
+                min={1}
+                step={1}
               />
             </div>
 
             <div className='flex flex-col gap-2 items-start'>
-              <Label htmlFor='font' className='text-slate-600'>
-                Font
-              </Label>
+              <div className='text-slate-600'>
+                <p className='font-medium text-sm'>Font</p>
+              </div>
               <Select value={textFont} onValueChange={setTextFont}>
                 <SelectTrigger>
                   <SelectValue placeholder='Choose a font' />
@@ -144,7 +148,10 @@ export default function TextDialog({
             </div>
 
             <div className='flex flex-col gap-6'>
-              <Label className='text-slate-600'>Fill</Label>
+              <div className='text-slate-600 flex items-center justify-between'>
+                <p className='font-medium text-sm'>Fill</p>
+                <p className='ml-1 text-slate-400 text-sm'>{textFill}</p>
+              </div>
               <div className='flex'>
                 <HexColorPicker
                   className='flex-grow'
