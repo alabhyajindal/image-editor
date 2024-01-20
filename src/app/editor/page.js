@@ -109,26 +109,29 @@ export default function Home() {
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Fill canvas with temp color
-      ctx.fillStyle = 'black'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      // drawImageOnCanvas(selectedImage)
+      // Load image
+      const img = new Image()
+      img.src = selectedImage
+      img.onload = function () {
+        // Draw image
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 
-      // Draw texts
-      for (let i = 0; i < texts.length; i++) {
-        let text = texts[i]
-        const { imageText, x, y, textSize, textFont, textStroke, textFill } =
-          text
-        ctx.font = `${textSize}px ${textFont}`
-        ctx.lineWidth = textSize * 0.1
-        ctx.strokeStyle = textStroke
-        ctx.strokeText(imageText, x, y)
-        ctx.fillStyle = textFill
-        ctx.fillText(imageText, x, y)
+        // Draw texts
+        for (let i = 0; i < texts.length; i++) {
+          let text = texts[i]
+          const { imageText, x, y, textSize, textFont, textStroke, textFill } =
+            text
+          ctx.font = `${textSize}px ${textFont}`
+          ctx.lineWidth = textSize * 0.1
+          ctx.strokeStyle = textStroke
+          ctx.strokeText(imageText, x, y)
+          ctx.fillStyle = textFill
+          ctx.fillText(imageText, x, y)
+        }
       }
     }
     draw()
-  }, [texts])
+  }, [selectedImage, texts])
 
   function drawImageOnCanvas(imagePath) {
     const canvas = canvasRef.current
@@ -165,6 +168,8 @@ export default function Home() {
     const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     setSelectedImage(null)
+    setTexts([])
+    setSelectedText(-1)
   }
 
   const downloadImage = () => {
@@ -201,15 +206,17 @@ export default function Home() {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
     const data = imageData.data
     for (let i = 0; i < data.length; i += 4) {
-      data[i] = 255 - data[i] // red
-      data[i + 1] = 255 - data[i + 1] // green
-      data[i + 2] = 255 - data[i + 2] // blue
+      data[i] = 255 - data[i]
+      data[i + 1] = 255 - data[i + 1]
+      data[i + 2] = 255 - data[i + 2]
     }
     ctx.putImageData(imageData, 0, 0)
   }
 
   const reset = () => {
     drawImageOnCanvas(selectedImage)
+    setTexts([])
+    setSelectedText(-1)
   }
 
   return (
