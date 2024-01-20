@@ -241,19 +241,24 @@ export default function Home() {
       </div>
       <div>
         {selectedImage ? (
-          <div className='my-12 grid grid-cols-3 md:flex gap-4'>
-            <Button onClick={() => setTextOpen(true)}>Text</Button>
-            <Button onClick={() => setBorderOpen(true)}>Border</Button>
+          <div className='my-12 grid grid-cols-4 grid-rows-2 gap-6'>
+            <Button className='col-span-2' onClick={() => setTextOpen(true)}>
+              Text
+            </Button>
+            <Button className='col-span-2' onClick={() => setBorderOpen(true)}>
+              Border
+            </Button>
+
+            <Button onClick={removeImage}>New</Button>
+            <Button variant='outline' onClick={reset}>
+              Reset
+            </Button>
             <Button
-              className='bg-green-600 hover:bg-green-500'
+              className='bg-green-600 hover:bg-green-500 col-span-2'
               onClick={downloadImage}
             >
               Download
             </Button>
-            <Button variant='outline' onClick={reset}>
-              Reset
-            </Button>
-            <Button onClick={removeImage}>New</Button>
           </div>
         ) : null}
       </div>
