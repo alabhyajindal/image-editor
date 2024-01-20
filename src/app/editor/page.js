@@ -56,16 +56,11 @@ export default function Home() {
       const cursorY = e.clientY - canvasRect.top
 
       texts.forEach((text, index) => {
-        const textWidth = ctx.measureText(text.imageText).width
-        const textHeight = text.textSize
-
-        console.log({ text: text.imageText, textWidth, textHeight })
-
         if (
           cursorX >= text.x &&
-          cursorX <= text.x + textWidth &&
+          cursorX <= text.x + text.width &&
           cursorY <= text.y &&
-          cursorY >= text.y - textHeight
+          cursorY >= text.y - text.height
         ) {
           console.log(index)
           setSelectedText(index)

@@ -53,17 +53,33 @@ export default function TextDialog({
 
   const addText = () => {
     setTextOpen(false)
+    const x = 100
+    const y = 100
+
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
+    ctx.font = `${textSize}px ${textFont}`
+    ctx.lineWidth = textSize * 0.1
+    ctx.strokeStyle = textStroke
+
+    ctx.strokeText(imageText, x, y)
+    ctx.fillStyle = textFill
+    ctx.fillText(imageText, x, y)
+
+    const width = ctx.measureText(imageText).width
+    const height = textSize
+
     const tempText = {
-      x: 100,
-      y: 100,
+      x,
+      y,
       imageText,
       textSize,
       textFont,
       textStroke,
       textFill,
+      width,
+      height,
     }
 
     setTexts(
