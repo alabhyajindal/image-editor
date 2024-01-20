@@ -76,9 +76,11 @@ export default function Home() {
       const cursorX = e.clientX - canvasRect.left
       const cursorY = e.clientY - canvasRect.top
 
+      const text = texts[selectedText]
+
       setTexts(
         produce((draft) => {
-          draft[selectedText].x = cursorX
+          draft[selectedText].x = cursorX - draft[selectedText].width / 2
           draft[selectedText].y = cursorY
         })
       )
