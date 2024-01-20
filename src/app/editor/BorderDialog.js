@@ -44,6 +44,11 @@ export default function BorderDialog({
     // Add to border array, an object with these two info
   }
 
+  const removeBorder = () => {
+    setBorder({})
+    setBorderOpen(false)
+  }
+
   return (
     <div className='mb-2 flex justify-center gap-8'>
       <Dialog open={borderOpen} onOpenChange={setBorderOpen}>
@@ -76,9 +81,14 @@ export default function BorderDialog({
             </div>
           </div>
 
-          <Button type='button' onClick={addBorder} className='mt-4'>
-            {border ? 'Update' : 'Add'}
+          <Button onClick={addBorder} className='mt-4'>
+            {Object.keys(border).length > 0 ? 'Update' : 'Add'}
           </Button>
+          {Object.keys(border).length > 0 ? (
+            <Button onClick={removeBorder} variant='outline'>
+              Remove
+            </Button>
+          ) : null}
         </DialogContent>
       </Dialog>
     </div>
