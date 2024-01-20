@@ -41,7 +41,6 @@ export default function TextDialog({
 }) {
   const [textValue, setTextValue] = useState('yoooo')
   const [textFill, setTextFill] = useState('#fff')
-  const [textStroke, setTextStroke] = useState('#000')
   const [textFont, setTextFont] = useState('sans-serif')
   const [textSize, setTextSize] = useState(48)
 
@@ -52,9 +51,9 @@ export default function TextDialog({
       toast.error('Please enter a text size between 24 and 120')
     }
 
-    setTextOpen(false)
     const x = 100
     const y = 100
+    const textStroke = '#000'
 
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -89,6 +88,7 @@ export default function TextDialog({
     )
 
     setTextValue('')
+    setTextOpen(false)
   }
 
   return (

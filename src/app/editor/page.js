@@ -31,6 +31,7 @@ import toast from 'react-hot-toast'
 import TextDialog from './TextDialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { produce } from 'immer'
+import BorderDialog from './BorderDialog'
 
 const FONTS = [
   // 'Noto Sans',
@@ -44,6 +45,9 @@ export default function Home() {
   const [texts, setTexts] = useState([])
   const [selectedText, setSelectedText] = useState(-1)
   const canvasRef = useRef(null)
+
+  const [borderOpen, setBorderOpen] = useState(false)
+  const [border, setBorder] = useState({})
 
   useEffect(() => {
     const handleStart = (e) => {
@@ -123,7 +127,14 @@ export default function Home() {
       ctx.fillStyle = textFill
       ctx.fillText(textValue, x, y)
     }
-  }, [selectedImage, texts])
+
+    // Draw border
+    if (border) {
+      ctx.lineWidth = border.size
+      ctx.strokeStyle = border.color
+      ctx.strokeRect(0, 0, canvas.width, canvas.height)
+    }
+  }, [border, selectedImage, texts])
 
   const loadAndDrawImage = async (e) => {
     const file = e.target.files[0]
@@ -160,6 +171,7 @@ export default function Home() {
     setSelectedImage(null)
     setTexts([])
     setSelectedText(-1)
+    setBorder({})
   }
 
   const downloadImage = () => {
@@ -179,20 +191,30 @@ export default function Home() {
 
     setTexts([])
     setSelectedText(-1)
+    setBorder({})
   }
 
   return (
     <main className='flex flex-col items-center justify-center'>
       {selectedImage ? (
-        <TextDialog
-          FONTS={FONTS}
-          selectedImage={selectedImage}
-          canvasRef={canvasRef}
-          textOpen={textOpen}
-          setTextOpen={setTextOpen}
-          texts={texts}
-          setTexts={setTexts}
-        />
+        <div>
+          <TextDialog
+            FONTS={FONTS}
+            selectedImage={selectedImage}
+            canvasRef={canvasRef}
+            textOpen={textOpen}
+            setTextOpen={setTextOpen}
+            texts={texts}
+            setTexts={setTexts}
+          />
+          <BorderDialog
+            borderOpen={borderOpen}
+            setBorderOpen={setBorderOpen}
+            border={border}
+            setBorder={setBorder}
+            canvasRef={canvasRef}
+          />
+        </div>
       ) : (
         <div>
           <Card className='w-[350px] mx-auto mt-24'>
@@ -219,6 +241,7 @@ export default function Home() {
         {selectedImage ? (
           <div className='my-12 grid grid-cols-3 md:flex gap-4'>
             <Button onClick={() => setTextOpen(true)}>Text</Button>
+            <Button onClick={() => setBorderOpen(true)}>Border</Button>
             <Button
               className='bg-green-600 hover:bg-green-500'
               onClick={downloadImage}
