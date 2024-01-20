@@ -42,7 +42,7 @@ export default function TextDialog({
   const [imageText, setImageText] = useState('yoooo')
   const [textFill, setTextFill] = useState('#fff')
   const [textStroke, setTextStroke] = useState('#000')
-  const [textFont, setTextFont] = useState('Climate Crisis')
+  const [textFont, setTextFont] = useState('sans-serif')
   const [textSize, setTextSize] = useState(48)
 
   const updateTextSize = (value) => {
@@ -65,8 +65,6 @@ export default function TextDialog({
       textStroke,
       textFill,
     }
-    tempText.width = ctx.measureText(tempText.imageText).width
-    tempText.height = textSize
 
     setTexts(
       produce((draft) => {
@@ -120,6 +118,7 @@ export default function TextDialog({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value='sans-serif'>Sans Serif</SelectItem>
                     {FONTS.map((font, index) => (
                       <SelectItem key={index} value={font}>
                         {font}

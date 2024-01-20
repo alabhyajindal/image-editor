@@ -48,6 +48,7 @@ export default function Home() {
   useEffect(() => {
     const handleMouseDown = (e) => {
       const canvas = canvasRef.current
+      const ctx = canvas.getContext('2d')
       const canvasRect = canvas.getBoundingClientRect()
 
       // Calculate the cursor position within the canvas
@@ -55,13 +56,18 @@ export default function Home() {
       const cursorY = e.clientY - canvasRect.top
 
       texts.forEach((text, index) => {
+        const textWidth = ctx.measureText(text.imageText).width
+        const textHeight = text.textSize
+
+        console.log({ text: text.imageText, textWidth, textHeight })
+
         if (
           cursorX >= text.x &&
-          cursorX <= text.x + text.width &&
+          cursorX <= text.x + textWidth &&
           cursorY <= text.y &&
-          cursorY >= text.y - text.height
+          cursorY >= text.y - textHeight
         ) {
-          console.log(text)
+          console.log(index)
           setSelectedText(index)
         }
       })
@@ -102,7 +108,6 @@ export default function Home() {
   useEffect(() => {
     function draw() {
       console.log('drawing')
-      console.log(texts)
       const canvas = canvasRef.current
       const ctx = canvas.getContext('2d')
 
@@ -267,13 +272,13 @@ export default function Home() {
       </div>
 
       {/* Loading fonts */}
-      <section className='invisible'>
+      {/* <section className='invisible'>
         {FONTS.map((font, index) => (
           <div key={index} style={{ fontFamily: font }}>
             .
           </div>
         ))}
-      </section>
+      </section> */}
     </main>
   )
 }
