@@ -39,7 +39,7 @@ export default function Home() {
   const canvasRef = useRef(null)
 
   function drawImageOnCanvas(imagePath) {
-    const canvas = document.getElementById('canvas')
+    const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
     const img = new Image()
@@ -69,14 +69,14 @@ export default function Home() {
   }
 
   const removeImage = () => {
-    const canvas = document.getElementById('canvas')
+    const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     setSelectedImage(null)
   }
 
   const downloadImage = () => {
-    const canvas = document.getElementById('canvas')
+    const canvas = canvasRef.current
     const link = document.createElement('a')
     link.download = 'image.jpg'
     link.href = canvas.toDataURL('image/jpg')
@@ -85,7 +85,7 @@ export default function Home() {
 
   const grayscale = () => {
     const img = new Image()
-    const canvas = document.getElementById('canvas')
+    const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
     ctx.drawImage(img, 0, 0)
@@ -102,7 +102,7 @@ export default function Home() {
 
   const invert = () => {
     const img = new Image()
-    const canvas = document.getElementById('canvas')
+    const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
     ctx.drawImage(img, 0, 0)
@@ -163,12 +163,10 @@ export default function Home() {
               </Button>
             </div>
             <div className='flex flex-col gap-4'>
-              <Button variant='outline' onClick={removeImage}>
-                New
-              </Button>
-              <Button className='bg-red-600 hover:bg-red-500' onClick={reset}>
+              <Button variant='outline' onClick={reset}>
                 Reset
               </Button>
+              <Button onClick={removeImage}>New</Button>
             </div>
           </div>
         ) : null}

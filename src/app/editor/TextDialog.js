@@ -38,7 +38,8 @@ export default function TextDialog({
 }) {
   const [imageText, setImageText] = useState('')
   const [textFill, setTextFill] = useState('#fff')
-  const [textFont, setTextFont] = useState('Noto Sans')
+  const [textStroke, setTextStroke] = useState('#000')
+  const [textFont, setTextFont] = useState('Climate Crisis')
   const [textSize, setTextSize] = useState(48)
 
   const updateTextSize = (value) => {
@@ -51,6 +52,11 @@ export default function TextDialog({
     const canvas = document.getElementById('canvas')
     const ctx = canvas.getContext('2d')
     ctx.font = `${textSize}px ${textFont}`
+
+    ctx.lineWidth = textSize * 0.1
+    ctx.strokeStyle = textStroke
+    ctx.strokeText(imageText, x, y)
+
     ctx.fillStyle = textFill
     ctx.fillText(imageText, x, y)
 
@@ -138,20 +144,34 @@ export default function TextDialog({
               </Select>
             </div>
 
-            <div className='flex flex-col gap-4'>
-              <Label className='text-slate-600'>Fill</Label>
-              <div className='flex'>
-                <HexColorPicker
-                  className='flex-grow'
-                  color={textFill}
-                  onChange={setTextFill}
-                />
+            <div className='flex justify-around'>
+              <div className='flex flex-col gap-6'>
+                <Label className='text-slate-600'>Fill</Label>
+                <div className='flex'>
+                  <HexColorPicker
+                    className='flex-grow'
+                    color={textFill}
+                    onChange={setTextFill}
+                  />
+                </div>
+              </div>
+
+              <div className='flex flex-col gap-6'>
+                <Label className='text-slate-600'>Stroke</Label>
+                <div className='flex'>
+                  <HexColorPicker
+                    className='flex-grow'
+                    color={textStroke}
+                    onChange={setTextStroke}
+                  />
+                </div>
               </div>
             </div>
           </div>
           <Button
             type='button'
             onClick={() => (imageText ? promptForTextPosition() : null)}
+            className='mt-4'
           >
             Add
           </Button>
