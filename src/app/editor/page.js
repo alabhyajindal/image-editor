@@ -45,7 +45,8 @@ export default function Home() {
   const [borderOpen, setBorderOpen] = useState(false)
   const [border, setBorder] = useState({})
   const [history, setHistory] = useState([])
-  const [historyIndex, setHistoryIndex] = useState(-1)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [manualAction, setManualAction] = useState(false)
 
   useEffect(() => {
     const handleStart = (e) => {
@@ -107,6 +108,11 @@ export default function Home() {
       canvas.removeEventListener('mousemove', handleMove)
     }
   }, [selectedText, texts])
+
+  // History is only updated when a manual action is taken. Hence, the current index of the history will always be the last item in the array.
+  useEffect(() => {
+    setCurrentIndex(history.length - 1)
+  }, [history])
 
   useEffect(() => {
     // Add to history if action is taken by the user
@@ -213,11 +219,27 @@ export default function Home() {
 
   function handleUndo() {
     setManualAction(false)
-    const previousCanvas = history[history.length - 2]
-    const { currentBorder, currentSelectedImage, currentTexts } = previousCanvas
-    setBorder(currentBorder)
-    setSelectedImage(currentSelectedImage)
-    setTexts(currentTexts)
+    if (currentIndex > 0) {
+      const previousCanvas = history[currentIndex - 1]
+      const { currentBorder, currentSelectedImage, currentTexts } =
+        previousCanvas
+      setBorder(currentBorder)
+      setSelectedImage(currentSelectedImage)
+      setTexts(currentTexts)
+      setCurrentIndex(currentIndex - 1)
+    }
+  }
+
+  function handleRedo() {
+    setManualAction(false)
+    if (currentIndex < history.length - 1) {
+      const nextCanvas = history[currentIndex + 1]
+      const { currentBorder, currentSelectedImage, currentTexts } = nextCanvas
+      setBorder(currentBorder)
+      setSelectedImage(currentSelectedImage)
+      setTexts(currentTexts)
+      setCurrentIndex(currentIndex + 1)
+    }
   }
 
   return (
@@ -262,8 +284,16 @@ export default function Home() {
       <div>
         <canvas ref={canvasRef} className='w-full mt-2' id='canvas'></canvas>
         {selectedImage ? (
-          <div>
-            <div className='mt-12 grid grid-cols-4 grid-rows-2 gap-4'>
+          <div className='mt-12 '>
+            <div className='mb-6 flex gap-4'>
+              <Button className='flex-grow' onClick={handleUndo}>
+                Undo
+              </Button>
+              <Button className='flex-grow' onClick={handleRedo}>
+                Redo
+              </Button>
+            </div>
+            <div className='grid grid-cols-4 grid-rows-2 gap-4'>
               <Button
                 className='col-span-2'
                 onClick={() => {
@@ -293,12 +323,6 @@ export default function Home() {
               >
                 Download
               </Button>
-            </div>
-            <div className='mt-8 flex gap-4'>
-              <Button className='flex-grow' onClick={handleUndo}>
-                Undo
-              </Button>
-              <Button className='flex-grow'>Redo</Button>
             </div>
           </div>
         ) : null}
