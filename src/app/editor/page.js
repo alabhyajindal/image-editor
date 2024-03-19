@@ -44,6 +44,8 @@ export default function Home() {
 
   const [borderOpen, setBorderOpen] = useState(false)
   const [border, setBorder] = useState({})
+  const [history, setHistory] = useState([])
+  const [historyIndex, setHistoryIndex] = useState(-1)
 
   useEffect(() => {
     const handleStart = (e) => {
@@ -107,6 +109,17 @@ export default function Home() {
   }, [selectedText, texts])
 
   useEffect(() => {
+    // Add to history if action is taken by the user
+    if (manualAction) {
+      const currentBorder = structuredClone(border)
+      const currentSelectedImage = selectedImage
+      const currentTexts = structuredClone(texts)
+      setHistory((h) => [
+        ...h,
+        { currentBorder, currentSelectedImage, currentTexts },
+      ])
+    }
+
     if (!selectedImage) return
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -135,7 +148,7 @@ export default function Home() {
       ctx.strokeStyle = border.color
       ctx.strokeRect(0, 0, canvas.width, canvas.height)
     }
-  }, [border, selectedImage, texts])
+  }, [border, manualAction, selectedImage, texts])
 
   const loadAndDrawImage = async (e) => {
     const file = e.target.files[0]
@@ -198,6 +211,15 @@ export default function Home() {
     ctx.drawImage(selectedImage, 0, 0, canvas.width, canvas.height)
   }
 
+  function handleUndo() {
+    setManualAction(false)
+    const previousCanvas = history[history.length - 2]
+    const { currentBorder, currentSelectedImage, currentTexts } = previousCanvas
+    setBorder(currentBorder)
+    setSelectedImage(currentSelectedImage)
+    setTexts(currentTexts)
+  }
+
   return (
     <main className='flex flex-col items-center'>
       {selectedImage ? (
@@ -240,24 +262,44 @@ export default function Home() {
       <div>
         <canvas ref={canvasRef} className='w-full mt-2' id='canvas'></canvas>
         {selectedImage ? (
-          <div className='mt-12 grid grid-cols-4 grid-rows-2 gap-4'>
-            <Button className='col-span-2' onClick={() => setTextOpen(true)}>
-              Text
-            </Button>
-            <Button className='col-span-2' onClick={() => setBorderOpen(true)}>
-              Border
-            </Button>
+          <div>
+            <div className='mt-12 grid grid-cols-4 grid-rows-2 gap-4'>
+              <Button
+                className='col-span-2'
+                onClick={() => {
+                  setManualAction(true)
+                  setTextOpen(true)
+                }}
+              >
+                Text
+              </Button>
+              <Button
+                className='col-span-2'
+                onClick={() => {
+                  setManualAction(true)
+                  setBorderOpen(true)
+                }}
+              >
+                Border
+              </Button>
 
-            <Button onClick={removeImage}>New</Button>
-            <Button variant='outline' onClick={reset}>
-              Reset
-            </Button>
-            <Button
-              className='bg-green-600 hover:bg-green-500 col-span-2'
-              onClick={downloadImage}
-            >
-              Download
-            </Button>
+              <Button onClick={removeImage}>New</Button>
+              <Button variant='outline' onClick={reset}>
+                Reset
+              </Button>
+              <Button
+                className='bg-green-600 hover:bg-green-500 col-span-2'
+                onClick={downloadImage}
+              >
+                Download
+              </Button>
+            </div>
+            <div className='mt-8 flex gap-4'>
+              <Button className='flex-grow' onClick={handleUndo}>
+                Undo
+              </Button>
+              <Button className='flex-grow'>Redo</Button>
+            </div>
           </div>
         ) : null}
       </div>
