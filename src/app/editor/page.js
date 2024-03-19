@@ -50,6 +50,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleStart = (e) => {
+      setManualAction(true)
       const canvas = canvasRef.current
       const ctx = canvas.getContext('2d')
       const canvasRect = canvas.getBoundingClientRect()
